@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>编程式的导航</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link to="/user/foo">/user/foo</router-link>
+				<router-link to="/user/bar">/user/bar</router-link>
+			</p>
+			<router-view></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const Foo = {
+				template: `
+					<div>
+						<h2>User foo</h2>	
+						<router-link to="/user/foo/posts">posts</router-link>
+						<router-view></router-view>	
+					</div>
+				`
+			}
+
+			const Bar = {
+				template: `
+					<div>
+						<h2>User bar</h2>				
+					</div>
+				`
+			}
+
+			const router = new VueRouter({
+				routes: [{
+					path: '/user/foo',
+					component: Foo,
+					children: [{
+						path: 'posts',
+						component: {
+							template: '<div>posts<p @click="go">go</p></div>',
+							methods: {
+								back() {
+									this.$router.push({//router.push，导航到指定URL，向history添加新记录
+										path: '/user/foo'
+									})
+								},
+								replace(){//router.replace，导航到指定URL，不会向history添加新记录，而是替换掉当前的history记录
+									this.$router.replace({
+										path: '/user/foo'
+									})
+								},
+								go(){//router.go，在History记录中向前或者后退多少步
+									this.$router.go(-3)
+								}
+							}
+						}
+					}]
+				}, {
+					path: '/user/bar',
+					component: Bar
+				}]
+			})
+			const app = new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>

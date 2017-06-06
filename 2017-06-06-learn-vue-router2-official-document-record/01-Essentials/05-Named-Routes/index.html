@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>命名路由</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link :to="{name:'foo',params:{id:123}}">/user/foo</router-link>
+			</p>
+			<router-view></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const Foo = {
+				template: `
+					<div>
+						<h2>User {{$route.params.id}}</h2>	
+					</div>
+				`
+			}
+
+			const router = new VueRouter({
+				routes: [{
+					path: '/user/:id',
+					component: Foo,
+					name:'foo' //命名
+				}]
+			})
+			const app = new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>
