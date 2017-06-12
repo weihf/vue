@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>重定向 和 别名</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link to="/foo">foo</router-link>
+				<router-link to="/bar">bar</router-link>
+			</p>
+			<router-view></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const router = new VueRouter({
+				routes: [{
+					path: '/foo',
+					alias:'/bar',
+					components: {
+						default: {
+							template: '<div>foo</div>'
+						}
+					}
+				}, {
+					path: '/bar',
+					name: 'bar',
+					components: {
+						default: {
+							template: '<div>bar</div>'
+						}
+					}
+				}]
+			})
+			new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>

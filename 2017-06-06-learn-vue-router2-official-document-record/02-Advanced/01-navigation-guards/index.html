@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>导航钩子</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link to="/foo">/foo</router-link>
+				<router-link to="/bar">/bar</router-link>
+			</p>
+			<router-view></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const router = new VueRouter({
+				routes: [{
+					path: '/foo',
+					component: {
+						template:'<div>foo</div>'
+					},
+					beforeEnter:function(to,from,next){//某个路由独享的钩子
+						console.log('foo')
+					}
+				},{
+					path:'/bar',
+					component:{
+						template:'<div>bar</div>',
+						beforeRouteEnter(to,from,next){//组件内的钩子
+							console.log('bar-beforeRouteEnter')
+						},
+						beforeRouteUpdate(to,from,next){
+							console.log('bar-beforeRouteUpdate');
+							console.log(this)
+						},
+						beforeRouteLeave(to,from,next){
+							console.log('bar-beforeRouteLeave');
+							console.log(this)
+						}						
+					}
+				}]
+			})
+			
+			router.beforeEach(function(to,from,next){//全局钩子
+				next();
+			})
+			
+			const app = new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>

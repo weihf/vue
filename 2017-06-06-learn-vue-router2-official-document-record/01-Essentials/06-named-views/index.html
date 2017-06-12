@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>命名视图</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link to="/foo">foo</router-link>
+				<router-link to="/bar">bar</router-link>
+			</p>
+			<router-view></router-view>
+			<router-view name="a"></router-view>
+			<router-view name="b"></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const A = Vue.extend({
+				template: '<div @click="sell">aaa</div>',
+				methods: {
+					sell() {
+						alert('sell')
+					}
+				}
+			})
+			
+			const B = Vue.extend({
+				template: '<div>bbb</div>',
+			})
+			const router = new VueRouter({
+				routes: [{
+						path: '/foo',
+						components: {
+							default: {
+								template: '<div>home</div>'
+							},
+							a: A,
+							b:B
+						}
+					},
+					{
+						path: '/bar',
+						components: {
+							a:A
+						}
+					}
+				]
+			})
+			new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>

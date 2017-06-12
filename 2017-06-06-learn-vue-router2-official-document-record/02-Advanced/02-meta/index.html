@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>路由元信息</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<p>
+				<router-link to="/foo">/foo</router-link>
+				<router-link to="/bar">/bar</router-link>
+			</p>
+			<router-view></router-view>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+		<script type="text/javascript">
+			const router = new VueRouter({
+				routes: [{
+					path: '/foo',
+					component: {
+						template: '<div>foo</div>'
+					}
+				}]
+			})
+
+			router.beforeEach(function(to, from, next) { //全局钩子
+				if(to.mached.some(record => record.meta.requiresAuth)) {
+					if(!auth.loggedIn()) {
+						next({
+							path: '/login',
+							query: {
+								redirect: to.fullPath
+							}
+						})
+					} else {
+						next()
+					}
+				} else {
+					next()
+				}
+			})
+
+			const app = new Vue({
+				router
+			}).$mount('#app')
+		</script>
+	</body>
+
+</html>
